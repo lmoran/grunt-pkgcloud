@@ -1,7 +1,7 @@
 {
   "name": "grunt-pkgcloud",
   "description": "Grunt task for deploying using pkgcloud",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/shareworks/grunt-pkgcloud",
   "author": {
     "name": "Raymond Jelierse",
