@@ -84,6 +84,43 @@ grunt.initConfig({
 });
 ```
 
+##### Updating headers (Rackspace)
+
+```js
+grunt.initConfig({
+  pkgcloud: {
+    options: {
+      client: {
+        provider: 'rackspace',
+        username: 'username',
+        apiKey: 'awesomeAPIKey',
+        region: 'IAD'
+      }
+    },
+    files: [{
+      cwd: 'dist/css',
+      src: '**',
+      dest: 'test/css'
+    },{
+      cwd: 'dist/fonts',
+      src: '**',
+      dest: 'test/fonts',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    },{
+      cwd: 'dist/image',
+      src: '**',
+      dest: 'test/image'
+    },{
+      cwd: 'dist/js',
+      src: '**',
+      dest: 'test/js'
+    }]
+  }
+});
+```
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 

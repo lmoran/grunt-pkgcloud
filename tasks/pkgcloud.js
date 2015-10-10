@@ -78,6 +78,10 @@ module.exports = function(grunt) {
             metadata: options.metadata
           };
 
+      if (path.hasOwnProperty('headers')) {
+        file.headers = path.headers;
+      }
+
       function onFileUploaded(err, result) {
         if (err || !result) {
           deferred.reject(err);
@@ -93,10 +97,16 @@ module.exports = function(grunt) {
 
     var queue = this.files.map(function(f) {
       var files = f.src.map(function(local) {
-        return {
+        var file = {
           remote: local,
           local: f.cwd + '/' + local
         };
+
+        if (f.hasOwnProperty('headers')) {
+          file.headers = f.headers;
+        }
+
+        return file;
       });
 
       return getContainer(f.dest, options.createContainer)
