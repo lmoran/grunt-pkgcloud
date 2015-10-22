@@ -6,115 +6,63 @@
  * Licensed under the MIT license.
  */
 
-'use strict';
+"use strict";
+
+var pkgcloud = require("pkgcloud"), utils = require("../lib/utils"), _ = require("underscore");
 
 module.exports = function(grunt) {
 
-  var pkgcloud = require('pkgcloud'),
-      path = require('path'),
-      q = require('q');
+  // Puts all the exported functions of the various modules in commands
+  var commands = _.extend(require("../lib/containers"),
+      require("../lib/servers"), require("../lib/networks"),
+      require("../lib/securitygroups"));
 
-  grunt.registerMultiTask('pkgcloud', 'Grunt task for deploying using pkgcloud', function() {
+  // Process the given command with arg.
+  var processCommand = function(command, options, arg) {
+    if (!arg) {
+      arg = "default";
+    }
+
+    if (!commands[command]) {
+      grunt.fail.fatal("Command [" + command + "] not found.");
+    }
+
+    // Check arg
+    if (typeof (commands[command]) !== "function") {
+      if (!commands[command][arg]) {
+        grunt.fail.fatal("Argument [" + arg + "] for [" + command
+            + "] not found.");
+      }
+    }
+
+    var func = (arg) ? commands[command][arg] : commands[command];
+    if (!func) {
+      func = commands[command]; // fallback to the main function
+    }
+
     var done = this.async();
-    var options = this.options({
-      createContainer: true,
-      metadata: {}
-    });
 
-    if (!options.client) {
-      throw new Error('Missing client configuration');
-    }
-
-    var client = pkgcloud.storage.createClient(options.client);
-
-    function getContainer(name, create) {
-      var deferred = q.defer();
-
-      if (typeof create === 'undefined') {
-        create = true;
+    var callback = function(e) {
+      if (e) {
+        grunt.fail.warn(e);
       }
+      done();
+    };
 
-      function onContainerResponse(error, container) {
-        if (!error) {
-          return deferred.resolve(container);
-        }
+    func
+        .apply(this, [ grunt, options.options.client, options[command], callback, arg ]);
+  };
 
-        if (error.statusCode === 404 && create) {
-          grunt.verbose.writeln('Container "' + name + '" not found, creating.');
+  // For each command, creates the grunt task
+  _.keys(commands).forEach(
+      function(command) {
 
-          return client.createContainer(name, onContainerResponse);
-        }
-
-        return deferred.reject(error);
-      }
-
-      grunt.verbose.writeln('Opening container "' + name + '".');
-
-      client.getContainer(name, onContainerResponse);
-
-      return deferred.promise;
-    }
-
-    function uploadFiles(files, container) {
-      grunt.log.subhead('Uploading files to "' + container.name + '" ...');
-
-      var queue = files
-        .filter(function(file) {
-          return grunt.file.isFile(file.local);
-        })
-        .map(function(file) {
-          return uploadFile(file, container);
+        grunt.task.registerTask("pkgcloud:" + command, function(arg) {
+          processCommand.apply(this, [ command,
+              grunt.config.data.pkgcloud, arg ]);
         });
-
-      return q.all(queue);
-    }
-
-    function uploadFile(path, container) {
-      var deferred = q.defer(),
-          file = {
-            container: container,
-            remote: path.remote,
-            local: path.local,
-            metadata: options.metadata
-          };
-
-      function onFileUploaded(err, result) {
-        if (err || !result) {
-          deferred.reject(err);
-        } else {
-          deferred.resolve(file);
-        }
-      }
-
-      client.upload(file, onFileUploaded);
-
-      return deferred.promise;
-    }
-
-    var queue = this.files.map(function(f) {
-      var files = f.src.map(function(local) {
-        return {
-          remote: local,
-          local: f.cwd + '/' + local
-        };
       });
 
-      return getContainer(f.dest, options.createContainer)
-        .then(function(container) {
-          return uploadFiles(files, container);
-        });
-    });
-
-    q.all(queue)
-      .then(function () {
-        grunt.log.ok('Files uploaded.');
-      })
-      .catch(function(error) {
-        grunt.log.error(error);
-      })
-      .finally(function() {
-        done();
-      });
-  });
-
+  // Register the Grunt multi task
+  grunt.registerMultiTask("pkgcloud", "Pkg-cloud tasks", processCommand);
 };

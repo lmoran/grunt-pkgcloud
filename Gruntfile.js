@@ -11,35 +11,48 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-    config: grunt.file.readJSON('config.json'),
+    config : grunt.file.readJSON('config.json'),
 
-    jshint: {
-      all: [
-        'Gruntfile.js',
-        'tasks/*.js'
-      ],
-      options: {
-        jshintrc: '.jshintrc'
+    jshint : {
+      all : [ 'Gruntfile.js', 'tasks/*.js' ],
+      options : {
+        jshintrc : '.jshintrc'
       }
     },
 
-    pkgcloud: {
-      test: {
-        options: {
-          client: {
-            provider: 'openstack',
-            username: '<%= config.objectstore.username %>',
-            password: '<%= config.objectstore.password %>',
-            tenantId: '<%= config.objectstore.tenant %>',
-            authUrl: 'https://identity.stack.cloudvps.com',
-            region: 'NL'
+    pkgcloud : {
+      options : {
+        client : {
+          authUrl : "https://keystone.rc.nectar.org.au:5000",
+          region : "Melbourne",
+          username : grunt.option("nectuser"),
+          password : grunt.option("nectpassword"),
+          provider : "openstack",
+          tenantName : "OpenAPI"
+        }
+      },
+      test : {
+        options : {
+          client : {
+            provider : 'openstack',
+            username : '<%= config.objectstore.username %>',
+            password : '<%= config.objectstore.password %>',
+            tenantId : '<%= config.objectstore.tenant %>',
+            authUrl : 'https://identity.stack.cloudvps.com',
+            region : 'NL'
           }
         },
-        files: [{
-          cwd: 'dist',
-          src: '**',
-          dest: 'shareworks.nl'
-        }]
+        files : [ {
+          cwd : 'dist',
+          src : '**',
+          dest : 'shareworks.nl'
+        } ],
+      },
+      getsecuritygroup : {
+        id : grunt.option("id")
+      },
+      getsecuritygrouprule : {
+        id : grunt.option("id")
       }
     }
 
@@ -49,7 +62,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  grunt.registerTask('test', ['clean', 'pkgcloud:test']);
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('test', [ 'clean', 'pkgcloud:test' ]);
+  grunt.registerTask('default', [ 'jshint' ]);
 
 };
