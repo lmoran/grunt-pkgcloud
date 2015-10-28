@@ -23,7 +23,8 @@
     "node" : ">= 0.10.0"
   },
   "scripts" : {
-    "test" : "./node_modules/mocha/bin/mocha -R spec --no-colors --reporter spec"
+    "test" : "mocha test --no-colors --reporter spec",
+    "testit" : "mocha test/testit --no-colors --timeout 10000 --reporter spec"
   },
   "devDependencies" : {
     "grunt-contrib-jshint" : "^0.9.2",
@@ -36,7 +37,7 @@
     "grunt" : "~0.4.5"
   },
   "dependencies" : {
-    "pkgcloud": "git+https://github.com/pkgcloud/pkgcloud#master",
+    "pkgcloud": "git+https://github.com/lmoran/pkgcloud#master",
     "underscore" : "1.8.3",
     "q" : "~1.0.1"
   }

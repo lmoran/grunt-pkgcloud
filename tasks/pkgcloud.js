@@ -49,8 +49,18 @@ module.exports = function(grunt) {
       done();
     };
 
+    // Expands the client options
+    var clientOptions= {
+        authUrl: grunt.config.get("pkgcloud.options.client.authUrl"),
+        region: grunt.config.get("pkgcloud.options.client.region"),
+        username: grunt.config.get("pkgcloud.options.client.username"),
+        password: grunt.config.get("pkgcloud.options.client.password"),
+        provider: grunt.config.get("pkgcloud.options.client.provider"),
+        tenantName: grunt.config.get("pkgcloud.options.client.tenantName")
+    };
+
     func
-        .apply(this, [ grunt, options.options.client, options[command], callback, arg ]);
+        .apply(this, [ grunt, clientOptions, options[command], callback, arg ]);
   };
 
   // For each command, creates the grunt task

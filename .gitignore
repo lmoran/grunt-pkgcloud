@@ -3,3 +3,5 @@ npm-debug.log
 .settings
 .project
 /getnetworks.sh
+/setnectar.sh
+/config.json

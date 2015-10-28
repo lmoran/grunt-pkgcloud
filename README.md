@@ -17,6 +17,46 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-pkgcloud');
 ```
 
+## Testing
+
+### Pre-requiremnts
+
+* Mocha `~2.3.3` has to be installed globally:
+`npm install mocha -g'
+* Make sure you have a cloud instance you can talk to (only OpenStatck has been tested so far)
+* Create a `config.json` file in the root directory with your credentials, written as:
+```json
+{
+  "objectstore": {
+    "username": "",
+    "password": "",
+    "tenant": ""
+  },
+  "pkgcloud": {
+    "authUrl" : "",
+    "region" : "",
+    "username": "",
+    "password": "",
+    "provider" : "",
+    "tenantName" : ""
+  }
+}
+```
+...and fill in the blanks (this file is not under Git in order to protect your sensitive data)
+
+
+### Running unit tests
+
+`npm run test`
+
+
+### Running integration tests
+
+Make sure you have a cloud instance you can talk to (only OpenStatck has been tested so far)
+
+`npm run testit`
+
+
 ## The "pkgcloud" task
 
 ### Overview
@@ -84,8 +124,3 @@ grunt.initConfig({
 });
 ```
 
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
-## Release History
-* **0.1.0**: First release

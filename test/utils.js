@@ -1,3 +1,7 @@
+/**
+ * Unit tests of the utils module
+ */
+
 "use strict";
 
 var sinon = require("sinon"), expect = require("chai").expect, _ = require("underscore");
@@ -8,12 +12,6 @@ var cb = {
   done : nop
 };
 sinon.spy(cb, "done");
-
-/*
- * mock.expects("method").once().throws();
- * 
- * mock.verify(); assert(spy.calledOnce);
- */
 
 describe("utils", function() {
 
