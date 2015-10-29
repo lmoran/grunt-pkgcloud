@@ -97,7 +97,7 @@ The client definition for a pkgcloud [storage provider](https://github.com/pkgcl
 
 ### Usage Examples
 
-#### Default Options
+#### Deployment of files
 Deploy files to your OpenStack environment in the `test` container using the default settings. The `files` section
 currently only has support Grunt's "Files Array" mapping format, and the `cwd` option has to be specified.
 
@@ -124,3 +124,65 @@ grunt.initConfig({
 });
 ```
 
+#### Management of security groups and rules
+
+```
+      getsecuritygroup : {
+        id : grunt.option("id")
+      },
+      createsecuritygroup : {
+        name : grunt.option("name"),
+        description : grunt.option("description"),
+        tenantId : grunt.option("tenantid")
+      },
+      destroysecuritygroup : {
+        id : grunt.option("id")
+      },
+      getsecuritygrouprule : {
+        id : grunt.option("id")
+      },
+      createsecuritygrouprule : {
+        securityGroupId : grunt.option("securityGroupId"),
+        name : grunt.option("name"),
+        description : grunt.option("description"),
+        direction : grunt.option("direction"),
+        ethertype : grunt.option("ethertype"),
+        portRangeMin : grunt.option("portRangeMin"),
+        portRangeMax : grunt.option("portRangeMax"),
+        protocol : grunt.option("protocol"),
+        remoteGroupId : grunt.option("remoteGroupId"),
+        remoteIpPrefix : grunt.option("remoteIpPrefix")
+      },
+      destroysecuritygrouprule : {
+        id : grunt.option("id")
+      }
+```
+
+CLI examples:
+
+```
+grunt pkgcloud:createsecuritygroup \
+   --name="testSecurityGroup" \
+   --description="Security group used for test" \
+   --tenantId="OpenAPI"
+```
+
+`grunt pkgcloud:getsecuritygroups`
+
+```
+grunt pkgcloud:destroysecuritygroup  \
+   --id="5bfa89da-ce9f-4e84-8312-cde56e2d3a07"
+```
+
+```
+grunt pkgcloud:createsecuritygrouprule \
+   --securityGroupId="5b769304-1904-4abc-a4fa-fcf0c37b5a30" \
+   --name="testSecurityGroupRule" \
+   --description="Security group rule used for test" \
+   --direction="ingress" --ethertype="IPv4" \
+   --portRangeMin="8000" --portRangeMax="8080" \
+   --protocol="tcp" --remoteIpPrefix="128.250.0.0/16" \
+   --tenantId="OpenAPI"
+```
+
+`grunt pkgcloud:getsecuritygrouprules`

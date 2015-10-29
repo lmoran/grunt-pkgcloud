@@ -15,7 +15,7 @@ module.exports = function(grunt) {
   // Puts all the exported functions of the various modules in commands
   var commands = _.extend(require("../lib/containers"),
       require("../lib/servers"), require("../lib/networks"),
-      require("../lib/securitygroups"));
+      require("../lib/securitygroups"), require("../lib/securitygrouprules"));
 
   // Process the given command with arg.
   var processCommand = function(command, options, arg) {
@@ -50,28 +50,25 @@ module.exports = function(grunt) {
     };
 
     // Expands the client options
-    var clientOptions= {
-        authUrl: grunt.config.get("pkgcloud.options.client.authUrl"),
-        region: grunt.config.get("pkgcloud.options.client.region"),
-        username: grunt.config.get("pkgcloud.options.client.username"),
-        password: grunt.config.get("pkgcloud.options.client.password"),
-        provider: grunt.config.get("pkgcloud.options.client.provider"),
-        tenantName: grunt.config.get("pkgcloud.options.client.tenantName")
+    var clientOptions = {
+      authUrl : grunt.config.get("pkgcloud.options.client.authUrl"),
+      region : grunt.config.get("pkgcloud.options.client.region"),
+      username : grunt.config.get("pkgcloud.options.client.username"),
+      password : grunt.config.get("pkgcloud.options.client.password"),
+      provider : grunt.config.get("pkgcloud.options.client.provider"),
+      tenantName : grunt.config.get("pkgcloud.options.client.tenantName")
     };
 
-    func
-        .apply(this, [ grunt, clientOptions, options[command], callback, arg ]);
+    func.apply(this, [ grunt, clientOptions, options[command], callback, arg ]);
   };
 
   // For each command, creates the grunt task
-  _.keys(commands).forEach(
-      function(command) {
+  _.keys(commands).forEach(function(command) {
 
-        grunt.task.registerTask("pkgcloud:" + command, function(arg) {
-          processCommand.apply(this, [ command,
-              grunt.config.data.pkgcloud, arg ]);
-        });
-      });
+    grunt.task.registerTask("pkgcloud:" + command, function(arg) {
+      processCommand.apply(this, [ command, grunt.config.data.pkgcloud, arg ]);
+    });
+  });
 
   // Register the Grunt multi task
   grunt.registerMultiTask("pkgcloud", "Pkg-cloud tasks", processCommand);

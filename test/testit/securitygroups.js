@@ -4,17 +4,13 @@
 
 "use strict";
 
-var expect = require("chai").expect, _ = require("underscore"), exec = require('child_process').exec;
-
-var gruntExec = function(cmd, callback) {
-  exec("grunt pkgcloud:" + cmd, callback);
-};
+var expect = require("chai").expect, _ = require("underscore"), utils = require("../../lib/utils");
 
 describe("securitygroups", function() {
 
   describe("listsecuritygroup", function() {
     it("lists security groups", function(done) {
-      gruntExec("getsecuritygroups", function(err, stdout, stderr) {
+      utils.gruntExec("getsecuritygroups", {}, function(err, stdout, stderr) {
         if (err) {
           console.log(err);
           expect(false).equals(true);
@@ -23,15 +19,18 @@ describe("securitygroups", function() {
 
         var lines = stdout.split("\n");
         expect(lines.length).above(2);
-        expect(lines[1].split(",")[1]).equals("name");
         done();
       });
     });
   });
-/* TODO
+
   describe("managesecuritygroup", function() {
     it("adds and removes a security group", function(done) {
-      gruntExec("addsecuritygroup", function(err, stdout, stderr) {
+      utils.gruntExec("createsecuritygroup", {
+        name : "testSecurityGroup",
+        description : "Security group used for test",
+        tenantId : "OpenAPI"
+      }, function(err, stdout, stderr) {
         if (err) {
           console.log(err);
           expect(false).equals(true);
@@ -39,20 +38,25 @@ describe("securitygroups", function() {
         }
 
         var lines = stdout.split("\n");
-        console.log(lines); // XXX
         expect(lines.length).above(2);
-        expect(lines[1].split(",")[1]).equals("status");
+        var id = lines[1].split("Created security group: ")[1];
 
-        
-        gruntExec("destroysecuritygroup", function(err, stdout, stderr) {
+        utils.gruntExec("destroysecuritygroup", {
+          id : id
+        }, function(err, stdout, stderr) {
           if (err) {
             console.log(err);
             expect(false).equals(true);
             done();
           }
+
+          var lines = stdout.split("\n");
+          expect(lines.length).above(2);
+          done();
         });
+
       });
+    });
   });
-    */
 
 });

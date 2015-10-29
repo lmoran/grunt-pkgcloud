@@ -61,6 +61,21 @@ module.exports = function(grunt) {
       },
       getsecuritygrouprule : {
         id : grunt.option("id")
+      },
+      createsecuritygrouprule : {
+        securityGroupId : grunt.option("securityGroupId"),
+        name : grunt.option("name"),
+        description : grunt.option("description"),
+        direction : grunt.option("direction"),
+        ethertype : grunt.option("ethertype"),
+        portRangeMin : grunt.option("portRangeMin"),
+        portRangeMax : grunt.option("portRangeMax"),
+        protocol : grunt.option("protocol"),
+        remoteGroupId : grunt.option("remoteGroupId"),
+        remoteIpPrefix : grunt.option("remoteIpPrefix")
+      },
+      destroysecuritygrouprule : {
+        id : grunt.option("id")
       }
     }
 
