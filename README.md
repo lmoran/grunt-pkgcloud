@@ -185,4 +185,29 @@ grunt pkgcloud:createsecuritygrouprule \
    --tenantId="OpenAPI"
 ```
 
+`grunt pkgcloud:getservers`
+
+`grunt pkgcloud:getimages`
+
+`grunt pkgcloud:getflavors`
+
+`grunt pkgcloud:getsecuritygroups`
+
 `grunt pkgcloud:getsecuritygrouprules`
+
+```
+grunt pkgcloud:createserver --tenantId="OpenAPI" \
+   --security_groups="[{'name':'default'},{'name':'consul'},{'name':'LB'}]" \
+   --availability_zone="melbourne-np" \
+   --imageRef="81f6b78f-6d51-4de9-a464-91d47543d4ba" \
+   --flavorRef="cba9ea52-8e90-468b-b8c2-777a94d81ed3" \
+   --name="testServer" --key_name="lmorandini"
+```
+
+`grunt pkgcloud:stopserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f"`
+
+`grunt pkgcloud:startserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f"`
+
+`grunt pkgcloud:destroyserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f"`
+
+

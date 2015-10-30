@@ -95,5 +95,4 @@ describe("securitygrouprules", function() {
       });
     });
   });
-
 });

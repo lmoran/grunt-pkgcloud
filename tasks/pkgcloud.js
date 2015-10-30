@@ -14,6 +14,7 @@ module.exports = function(grunt) {
 
   // Puts all the exported functions of the various modules in commands
   var commands = _.extend(require("../lib/containers"),
+      require("../lib/images"), require("../lib/flavors"),
       require("../lib/servers"), require("../lib/networks"),
       require("../lib/securitygroups"), require("../lib/securitygrouprules"));
 

@@ -23,7 +23,7 @@ describe("securitygroups", function() {
       });
     });
   });
-
+/*
   describe("managesecuritygroup", function() {
     it("adds and removes a security group", function(done) {
       utils.gruntExec("createsecuritygroup", {
@@ -58,5 +58,5 @@ describe("securitygroups", function() {
       });
     });
   });
-
+*/
 });
