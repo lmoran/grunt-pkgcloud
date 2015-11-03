@@ -33,13 +33,14 @@ grunt.loadNpmTasks('grunt-pkgcloud');
     "tenant": ""
   },
   "pkgcloud": {
-    "authUrl" : "",
-    "region" : "",
-    "username": "",
-    "password": "",
-    "provider" : "",
-    "tenantName" : ""
-  },
+    "client": {
+      "authUrl" : "",
+      "region" : "",
+      "username": "",
+      "password": "",
+      "provider" : "",
+      "tenantName" : ""
+    },
     "test" : {
       "tenantId" : "",
       "availability_zone" : "",
@@ -48,11 +49,18 @@ grunt.loadNpmTasks('grunt-pkgcloud');
       "key_name" : "",
       "remoteIpPrefix" : ""
     }
+  }
 }
 ```
-...and fill in the blanks. The "test" object is neeed only if you want to run the integration tests.
+...and fill in the blanks. The "test" object is needed only if you want to run the integration tests.
 (This file is not under Git in order to protect your sensitive data.)
-
+To load the config data you have to add to your Gruntfile.js:
+```
+    pkgcloud : {
+      options : {
+        client : grunt.file.readJSON("config.json").pkgcloud.client
+      },
+```
 
 ### Running unit tests
 
@@ -107,6 +115,7 @@ The client definition for a pkgcloud [storage provider](https://github.com/pkgcl
 ### Usage Examples
 
 #### Deployment of files
+FIXME: this is part of the old versio of this package, I think it is no longer current
 Deploy files to your OpenStack environment in the `test` container using the default settings. The `files` section
 currently only has support Grunt's "Files Array" mapping format, and the `cwd` option has to be specified.
 

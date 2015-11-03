@@ -11,7 +11,6 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-    config : grunt.file.readJSON("config.json"),
 
     jshint : {
       all : [ "Gruntfile.js", "tasks/*.js" ],
@@ -22,14 +21,7 @@ module.exports = function(grunt) {
 
     pkgcloud : {
       options : {
-        client : {
-          authUrl : "<%= config.pkgcloud.authUrl %>",
-          region : "<%= config.pkgcloud.region %>",
-          username : "<%= config.pkgcloud.username %>",
-          password : "<%= config.pkgcloud.password %>",
-          provider : "<%= config.pkgcloud.provider %>",
-          tenantName : "<%= config.pkgcloud.tenantName %>"
-        }
+        client : grunt.file.readJSON("config.json").pkgcloud.client
       },
       test : {
         options : {
