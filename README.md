@@ -39,10 +39,19 @@ grunt.loadNpmTasks('grunt-pkgcloud');
     "password": "",
     "provider" : "",
     "tenantName" : ""
-  }
+  },
+    "test" : {
+      "tenantId" : "",
+      "availability_zone" : "",
+      "imageRef" : "",
+      "flavorRef" : "",
+      "key_name" : "",
+      "remoteIpPrefix" : ""
+    }
 }
 ```
-...and fill in the blanks (this file is not under Git in order to protect your sensitive data)
+...and fill in the blanks. The "test" object is neeed only if you want to run the integration tests.
+(This file is not under Git in order to protect your sensitive data.)
 
 
 ### Running unit tests
@@ -126,38 +135,6 @@ grunt.initConfig({
 
 #### Management of security groups and rules
 
-```
-      getsecuritygroup : {
-        id : grunt.option("id")
-      },
-      createsecuritygroup : {
-        name : grunt.option("name"),
-        description : grunt.option("description"),
-        tenantId : grunt.option("tenantid")
-      },
-      destroysecuritygroup : {
-        id : grunt.option("id")
-      },
-      getsecuritygrouprule : {
-        id : grunt.option("id")
-      },
-      createsecuritygrouprule : {
-        securityGroupId : grunt.option("securityGroupId"),
-        name : grunt.option("name"),
-        description : grunt.option("description"),
-        direction : grunt.option("direction"),
-        ethertype : grunt.option("ethertype"),
-        portRangeMin : grunt.option("portRangeMin"),
-        portRangeMax : grunt.option("portRangeMax"),
-        protocol : grunt.option("protocol"),
-        remoteGroupId : grunt.option("remoteGroupId"),
-        remoteIpPrefix : grunt.option("remoteIpPrefix")
-      },
-      destroysecuritygrouprule : {
-        id : grunt.option("id")
-      }
-```
-
 CLI examples:
 
 ```
@@ -201,12 +178,18 @@ grunt pkgcloud:createserver --tenantId="OpenAPI" \
    --availability_zone="melbourne-np" \
    --imageRef="81f6b78f-6d51-4de9-a464-91d47543d4ba" \
    --flavorRef="cba9ea52-8e90-468b-b8c2-777a94d81ed3" \
-   --name="testServer" --key_name="lmorandini"
+   --name="testServerX" --key_name="lmorandini" \
+   --user_data="ZWNobyAicG9zdC1paW5zdGFsbGF0aW9uIiA+PiAvdmFyL2xvZy9wb3N0LmxvZw=="
 ```
 
 `grunt pkgcloud:stopserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f"`
 
 `grunt pkgcloud:startserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f"`
+
+```
+grunt pkgcloud:renameserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f" \
+    --name="newServer"
+```
 
 `grunt pkgcloud:destroyserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f"`
 

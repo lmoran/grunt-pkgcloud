@@ -1,10 +1,13 @@
 /**
- * Integration tests for security groups
+ * Integration tests for security group rules
  */
 
 "use strict";
 
 var expect = require("chai").expect, _ = require("underscore"), utils = require("../../lib/utils");
+
+// Loads test configuration
+var testConfig = utils.getConfig();
 
 describe("securitygrouprules", function() {
 
@@ -53,8 +56,8 @@ describe("securitygrouprules", function() {
           portRangeMax : 8080,
           protocol : "tcp",
           remoteGroupId : undefined,
-          remoteIpPrefix : "128.250.0.0/16",
-          tenantId : "OpenAPI"
+          remoteIpPrefix : testConfig.pkgcloud.test.remoteIpPrefix,
+          tenantId : testConfig.pkgcloud.test.tenantId
         }, function(err, stdout, stderr) {
           if (err) {
             console.log(JSON.stringify(err));

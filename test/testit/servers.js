@@ -4,11 +4,10 @@
 
 "use strict";
 
-var expect = require("chai").expect, _ = require("underscore"), exec = require('child_process').exec, utils = require("../../lib/utils");
+var expect = require("chai").expect, _ = require("underscore"), utils = require("../../lib/utils");
 
-var gruntExec = function(cmd, callback) {
-  exec("grunt pkgcloud:" + cmd, callback);
-};
+// Loads test configuration
+var testConfig = utils.getConfig();
 
 describe(
     "servers",
@@ -16,7 +15,7 @@ describe(
 
       describe("getservers", function() {
         it("returns a list of servers", function(done) {
-          gruntExec("getservers", function(err, stdout, stderr) {
+          utils.gruntExec("getservers", {}, function(err, stdout, stderr) {
             if (err) {
               console.log(err);
               expect(false).equals(true);
@@ -30,8 +29,23 @@ describe(
           });
         });
       });
-      // user_data : "sudo curl -sSL https://get.docker.com/ | sh;sudo usermod
-      // -aG docker ubuntu;sudo docker --version;sudo docker run hello-world",
+
+      describe("getflavors", function() {
+        it("returns a list of flavors", function(done) {
+          utils.gruntExec("getflavors", {}, function(err, stdout, stderr) {
+            if (err) {
+              console.log(err);
+              expect(false).equals(true);
+              done();
+            }
+
+            var lines = stdout.split("\n");
+            expect(lines.length).above(2);
+            expect(lines[1].split(",")[4]).equals("vcpus");
+            done();
+          });
+        });
+      });
 
       describe(
           "manageserver",
@@ -43,14 +57,14 @@ describe(
                       .gruntExec(
                           "createserver",
                           {
-                            tenantId : "OpenAPI",
-                            security_groups : "[{'name':'default'},{'name':'consul'},{'name':'LB'}]",
-                            user_data : "IyEvYmluL2Jhc2gNCnN1ZG8gY3VybCAtc1NMIGh0dHBzOi8vZ2V0LmRvY2tlci5jb20vIHwgc2gNCnN1ZG8gdXNlcm1vZCAtYUcgZG9ja2VyIHVidW50dQ0Kc3VkbyBkb2NrZXIgLS12ZXJzaW9uDQpzdWRvIGRvY2tlciBydW4gaGVsbG8td29ybGQ=",
-                            availability_zone : "melbourne-np",
-                            imageRef : "81f6b78f-6d51-4de9-a464-91d47543d4ba",
-                            flavorRef : "cba9ea52-8e90-468b-b8c2-777a94d81ed3",
+                            tenantId : testConfig.pkgcloud.test.tenantId,
+                            security_groups : "[{'name':'default'}]",
+                            user_data : "ZWNobyAicG9zdC1paW5zdGFsbGF0aW9uIiA+PiAvdmFyL2xvZy9wb3N0LmxvZw==",
+                            availability_zone : testConfig.pkgcloud.test.availability_zone,
+                            imageRef : testConfig.pkgcloud.test.imageRef,
+                            flavorRef : testConfig.pkgcloud.test.flavorRef,
                             name : "testServer",
-                            key_name : "lmorandini"
+                            key_name : testConfig.pkgcloud.test.key_name
                           }, function(err, stdout, stderr) {
 
                             if (err) {
@@ -85,7 +99,8 @@ describe(
                                 }
 
                                 var lines = stdout.split("\n");
-                                expect(lines[1].indexOf("Destroyied server")).above(-1);
+                                expect(lines[1].indexOf("Destroyied server"))
+                                    .above(-1);
                                 done();
                               });
                             });
@@ -93,4 +108,5 @@ describe(
                           });
                 });
           });
+
     });

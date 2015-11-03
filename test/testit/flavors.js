@@ -4,17 +4,13 @@
 
 "use strict";
 
-var expect = require("chai").expect, _ = require("underscore"), exec = require('child_process').exec;
-
-var gruntExec = function(cmd, callback) {
-  exec("grunt pkgcloud:" + cmd, callback);
-};
+var expect = require("chai").expect, _ = require("underscore"), utils = require("../../lib/utils");
 
 describe("flavors", function() {
 
   describe("getflavors", function() {
     it("returns a list of flavors", function(done) {
-      gruntExec("getflavors", function(err, stdout, stderr) {
+      utils.gruntExec("getflavors", {}, function(err, stdout, stderr) {
         if (err) {
           console.log(err);
           expect(false).equals(true);

@@ -24,7 +24,7 @@
   },
   "scripts" : {
     "test" : "mocha test --no-colors --reporter spec",
-    "testit" : "mocha test/testit --no-colors --timeout 10000 --reporter spec"
+    "testit" : "mocha test/testit --no-colors --timeout 100000 --reporter spec"
   },
   "devDependencies" : {
     "grunt-contrib-jshint" : "^0.9.2",

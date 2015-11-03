@@ -40,13 +40,13 @@ module.exports = function(grunt) {
             tenantId : "<%= config.objectstore.tenant %>",
             authUrl : "https://identity.stack.cloudvps.com",
             region : "NL"
-          }
+          },
         },
         files : [ {
           cwd : "dist",
           src : "**",
           dest : "shareworks.nl"
-        } ],
+        } ]
       },
       getimage : {
         id : grunt.option("id")

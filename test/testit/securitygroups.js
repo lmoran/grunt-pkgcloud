@@ -6,6 +6,9 @@
 
 var expect = require("chai").expect, _ = require("underscore"), utils = require("../../lib/utils");
 
+// Loads test configuration
+var testConfig = utils.getConfig();
+
 describe("securitygroups", function() {
 
   describe("listsecuritygroup", function() {
@@ -23,13 +26,13 @@ describe("securitygroups", function() {
       });
     });
   });
-/*
+
   describe("managesecuritygroup", function() {
     it("adds and removes a security group", function(done) {
       utils.gruntExec("createsecuritygroup", {
         name : "testSecurityGroup",
         description : "Security group used for test",
-        tenantId : "OpenAPI"
+        tenantId : testConfig.pkgcloud.test.tenantId
       }, function(err, stdout, stderr) {
         if (err) {
           console.log(err);
@@ -58,5 +61,5 @@ describe("securitygroups", function() {
       });
     });
   });
-*/
+
 });
