@@ -142,6 +142,7 @@ grunt.initConfig({
 });
 ```
 
+<<<<<<< HEAD
 #### Management of security groups and rules
 
 CLI examples:
@@ -202,4 +203,45 @@ grunt pkgcloud:renameserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f" \
 
 `grunt pkgcloud:destroyserver --id="2dec4a6f-41c8-4eac-8f2f-27e5e63a8e1f"`
 
+=======
+##### Updating headers (Rackspace)
+
+```js
+grunt.initConfig({
+  pkgcloud: {
+    options: {
+      client: {
+        provider: 'rackspace',
+        username: 'username',
+        apiKey: 'awesomeAPIKey',
+        region: 'IAD'
+      }
+    },
+    files: [{
+      cwd: 'dist/css',
+      src: '**',
+      dest: 'test/css'
+    },{
+      cwd: 'dist/fonts',
+      src: '**',
+      dest: 'test/fonts',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    },{
+      cwd: 'dist/image',
+      src: '**',
+      dest: 'test/image'
+    },{
+      cwd: 'dist/js',
+      src: '**',
+      dest: 'test/js'
+    }]
+  }
+});
+```
+
+## Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+>>>>>>> ae2f0b401a5892bb1966c14a2b75c6fa16703794
 

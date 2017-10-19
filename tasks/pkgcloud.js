@@ -43,6 +43,7 @@ module.exports = function(grunt) {
 
     var done = this.async();
 
+<<<<<<< HEAD
     var callback = function(e) {
       if (e) {
         grunt.fail.warn(e);
@@ -68,6 +69,43 @@ module.exports = function(grunt) {
 
     grunt.task.registerTask("pkgcloud:" + command, function(arg) {
       processCommand.apply(this, [ command, grunt.config.data.pkgcloud, arg ]);
+=======
+      if (path.hasOwnProperty('headers')) {
+        file.headers = path.headers;
+      }
+
+      function onFileUploaded(err, result) {
+        if (err || !result) {
+          deferred.reject(err);
+        } else {
+          deferred.resolve(file);
+        }
+      }
+
+      client.upload(file, onFileUploaded);
+
+      return deferred.promise;
+    }
+
+    var queue = this.files.map(function(f) {
+      var files = f.src.map(function(local) {
+        var file = {
+          remote: local,
+          local: f.cwd + '/' + local
+        };
+
+        if (f.hasOwnProperty('headers')) {
+          file.headers = f.headers;
+        }
+
+        return file;
+      });
+
+      return getContainer(f.dest, options.createContainer)
+        .then(function(container) {
+          return uploadFiles(files, container);
+        });
+>>>>>>> ae2f0b401a5892bb1966c14a2b75c6fa16703794
     });
   });
 

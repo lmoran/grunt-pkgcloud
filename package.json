@@ -20,7 +20,7 @@
     "url" : "https://github.com/shareworks/grunt-pkgcloud/blob/master/LICENSE-MIT"
   } ],
   "engines" : {
-    "node" : ">= 0.10.0"
+    "node" : ">= 4.2.0"
   },
   "scripts" : {
     "test" : "mocha test --no-colors --reporter spec",
@@ -34,7 +34,7 @@
     "sinon" : "1.17.1"
   },
   "peerDependencies" : {
-    "grunt" : "~0.4.5"
+    "grunt" : "1.0.x"
   },
   "dependencies" : {
     "pkgcloud": "git+https://github.com/lmoran/pkgcloud#master",
